@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "iostream": "cpp",
+        "C_Cpp.intelliSenseEngine": "Default",
+        "editor.suggest.snippetsPreventQuickSuggestions": "true",
+        "ostream": "cpp"
+    }
+}
