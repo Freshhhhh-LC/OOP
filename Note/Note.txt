@@ -28,16 +28,90 @@ ctrl+k+c快速注释
     return
         t7 = func(t1);//拷贝构造
     
-    const函数
-        防呆
-        只读
+const函数：
+    防呆
+    只读
 
-        const Time ts(12,0,0)；
-        tc.Set(12,0,1)；//报错
-        tc.Show()；//报错（编译器不知道是否修改了）
-        //const对象只能使用const类型函数
+    const Time ts(12,0,0)；
+    tc.Set(12,0,1)；//报错
+    tc.Show()；//报错（编译器不知道是否修改了）
+    //const对象只能使用const类型函数
 
-        const Time&rt = t1;
-        rt = t2;//修改的是t1，而不是让rt变成t2
-        rt.Set(12,0,1)；//报错
+    const Time& rt = t1;
+    rt = t2;//修改的是t1，而不是让rt变成t2
+    rt.Set(12,0,1)；//报错
+
+    在hpp中写:
+    void func();
+    void func() const;
+    就能让const和非const的都能用到这个函数
+    ti.func();
+    rt.func();
+
+    因此所有只要不修改值的函数都一定要用const
+
+返回值类型：
+    根据便利性设计
+
+深浅拷贝：
+
+    为什么赋值运算符和拷贝构造函数的参数是引用类型？
+        Time t8(t1);//拷贝构造参数为引用类型：t1为蓝本构造t7
+                    //拷贝构造函数非引用类型：t1为蓝本构造形参Source，值拷贝，此时再次触发拷贝构造函数，故产生递归
+
+    为什么赋值运算符和拷贝构造函数的参数是const引用类型？
+        //无可奈何的隔离形式
+        class Demo{
+        public:
+            Func(Demo& d);{
+                d.value++;
+                }
+        private:
+            int value;
+        };
+        Demo d1;
+        Demo d2;
+        d1.Func(d2);//不符合OOP的思想（自己的手不能伸到别人口袋里）
+                    //但拷贝构造函数就是这样的思想：t2(t1)实际上操作了t1，但不能改t1,所以需要加个const
     
+    为什么赋值运算符的参数是引用？
+        避免多一次拷贝构造函数的无意义调用
+
+    浅拷贝，成员的对等赋值，共用空间，可以不写拷贝构造函数；
+    深拷贝，指针类型成员不能对等复制，否则会引起多次释放的内存错误和 非预期的对象隔离失败 和 内存泄漏：
+
+    Array A1(10);
+    Array A2(A1);
+    A1.Set(6,15);
+    cout << A2.Get(6) <<endl;//报错
+    Array A3(10);
+    Array A4(15);
+    A4 = A3;//此时只能做成深拷贝，只是指向的空间的对等赋值
+
+    深拷贝函数写法：
+    Array::Array(const Array& Source){
+        Size = Source.Size;
+        //pData = Source.pData;//浅拷贝
+        
+        //深拷贝
+        pData = new int[Size];
+        for (unsigned i = 0; i < Size; i++){
+            pData[i] = Source.pData[I];
+        }
+    }
+
+    深拷贝赋值运算符写法：
+    Array& Array::operator=(const Array& Source){
+        if (this != &Source)//深拷贝时需要判断
+        {
+            Size = Source.Size;
+            pData = new int[Size];
+            for (unsigned i = 0; i < Size; i++){
+                pData[i] = Source.pData[I];
+            }
+        }
+    }
+
+        
+
+

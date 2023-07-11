@@ -19,9 +19,15 @@ int main(){
     unsigned int d1;
     cout << "请输入日期：xxxx xx xx" << endl;
     cin >> y1 >> m1 >> d1;
-    D1 = {y1, m1, d1};
-    D1.SetDay(d1);
-    Judge(D1);
+    try{
+        D1.Set(y1, m1, d1);
+        Judge(D1);
+    } catch(exception& e) {
+        cout << "Invalid Date" << endl;
+        cout << "Error : " << e.what() << endl;
+    }
+    
+    D1.Show();
     cin.clear();
     cin.sync();
     cin.get();

@@ -15,6 +15,9 @@ public:
              unsigned int Day);
 
     bool IsValidDate() const;
+    bool IsValidDate(unsigned int Year,
+                     unsigned int Month,
+                     unsigned int Day) const;
 
     void Show() const;
     unsigned int GetYear() const;
@@ -26,9 +29,9 @@ public:
     bool SetMonth(unsigned int Month);
     bool SetDay(unsigned int Day);
 
-    const unsigned int& p_Year;
-    const unsigned int& p_Month;
-    const unsigned int& p_Day;
+    const unsigned int& Year;
+    const unsigned int& Month;
+    const unsigned int& Day;
 
 private:
     unsigned int m_Year;
@@ -42,6 +45,7 @@ private:
     static unsigned int MaxYear;
     static unsigned int MaxMonth;
     static unsigned int MaxDay;
+    static const unsigned int daysInMonth[2][13];
     //int* pData;
 
     bool IsLeapYear(unsigned int year) const;
