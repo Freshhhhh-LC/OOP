@@ -122,5 +122,3 @@ unsigned int Date::GetDaysInMonth(unsigned int month) const{
         return daysInMonth[month];
     }
 }
-
-//LCS 2003/7/11
